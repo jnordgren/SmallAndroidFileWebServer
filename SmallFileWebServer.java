@@ -18,7 +18,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
- * Created by MagicJake on 2016-09-28.
+ * Created by Jacob Nordgren on 2016-09-28.
  */
 
 public class SmallFileWebServer extends AsyncTask<String,Void,Void> {
@@ -29,14 +29,14 @@ public class SmallFileWebServer extends AsyncTask<String,Void,Void> {
 
     private ArrayList<Socket> activeConnections;
 
-    private static final String TAG = "SmallFilWebServer";
+    private static final String TAG = "WebServer";
 
     private boolean running = false;
 
     private File rootDir;
 
 
-    private String serverName = "MyEliteWebServer";
+    private String serverName = "WebSurvur";
 
     public SmallFileWebServer(String rootDir, int port){
         activeConnections = new ArrayList<>();
@@ -127,7 +127,7 @@ public class SmallFileWebServer extends AsyncTask<String,Void,Void> {
                         break;
                     }
 
-                    respondeWithFile(output,reqParts[1]);
+                    respondWithFile(output,reqParts[1]);
                     break;
                 }
             }
@@ -191,12 +191,24 @@ public class SmallFileWebServer extends AsyncTask<String,Void,Void> {
         return indexRsp.toString();
     }
 
+    private String getSuffix(String fileName){
+        int lpos = fileName.lastIndexOf(".");
+        return fileName.substring(lpos+1, fileName.length());
+    }
     /**
      * Reads a file from local disk and sends to client.
      * @param out outpustream to wrtie to client
      * @param filename file to be sent.
      */
-    private void respondeWithFile(PrintStream out, String filename){
+    private void respondWithFile(PrintStream out, String filename){
+
+
+        switch(getSuffix(filename)){    // Handle filetypes.
+            case FileTypes.HTML:
+                break;
+            case FileTypes.JPEG:
+                break;
+        }
         File f = new File(rootDir.getPath() + "/" + filename);
         try {
 
